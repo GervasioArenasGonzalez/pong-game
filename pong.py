@@ -1,4 +1,5 @@
 import turtle
+import winsound
 
 #creo la pantalla
 pantalla=turtle.Screen()
@@ -65,6 +66,14 @@ pantalla.onkeypress(paleta_der_abajo,'Down')
 puntos_izquierda=0
 puntos_derecha=0
 
+#lapiz izquierdo
+lapiz_i=turtle.Turtle()
+lapiz_i.hideturtle()
+
+#lapiz derecho
+lapiz_d=turtle.Turtle()
+lapiz_d.hideturtle()
+
 
 #Bucle principal solo para mover la pelota
 while True:
@@ -75,15 +84,18 @@ while True:
     pelota.setx(pelota.xcor()+pelota.dx)
     pelota.sety(pelota.ycor()+pelota.dy)
 
-    #Rebote en bordes superior en inferior
+    #Rebote en bordes superior e inferior
 
     if pelota.ycor()>290:
         pelota.sety(290)
         pelota.dy*=-1
+        winsound.Beep(500,50)
     
     if pelota.ycor()<-290:
         pelota.sety(-290)
         pelota.dy*=-1
+        winsound.Beep(500,50)
+
     
     #Reiniciar la pelota si pasa por los bordes izquierdo o derecho
 
@@ -91,11 +103,12 @@ while True:
         pelota.goto(0,0)
         pelota.dx*=-1
         puntos_izquierda+=1
-        turtle.reset()
-        turtle.hideturtle()
-        turtle.penup()
-        turtle.goto(260,260)
-        turtle.write(str(puntos_izquierda),font=('Arial',24,'bold'))
+        lapiz_i.reset()
+        lapiz_i.hideturtle()
+        lapiz_i.penup()
+        lapiz_i.goto(260,260)
+        lapiz_i.write(str(puntos_izquierda),font=('Arial',24,'bold'))
+        winsound.PlaySound('arcade_blip.wav', winsound.SND_FILENAME | winsound.SND_ASYNC)
 
     
     if pelota.xcor()<-390:
@@ -107,13 +120,17 @@ while True:
         turtle.penup()
         turtle.goto(-260,260)
         turtle.write(str(puntos_derecha), font=('Arial',24,'bold'))
+        winsound.PlaySound('arcade_blip.wav', winsound.SND_FILENAME|winsound.SND_ASYNC)
+
     
     #colision con paleta derecha
     if (340<pelota.xcor()<350)and(paleta_derecha.ycor()-50<pelota.ycor()<paleta_derecha.ycor()+50):
         pelota.setx(340)#evita que se clave dentro de la paleta
         pelota.dx*=-1#rebote
+        winsound.Beep(1000,50)
 
     #colision con paleta izquierda
     if (-350<pelota.xcor()<-340)and(paleta_izquierda.ycor()-50<pelota.ycor()<paleta_izquierda.ycor()+50):
         pelota.setx(-340)#evita que se clave dentro de la paleta
         pelota.dx*=-1#rebote
+        winsound.Beep(1000,50)
